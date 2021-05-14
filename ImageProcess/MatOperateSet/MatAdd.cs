@@ -4,10 +4,11 @@ using System.Runtime.InteropServices;
 
 namespace ImageProcess.MatOperateSet
 {
-    public static partial class MatOperateSet<T> where T:unmanaged
+    /*矩阵加减法*/
+    unsafe public static partial class MatOperateSet
     {
         /*危险的矩阵加法，未判断元素越界*/
-        unsafe public static bool AddOffset(Mat2D mat,byte val)
+        public static bool AddOffset(Mat2D mat,byte val)
         {
             if(8 != mat.BitCount)
             {
@@ -23,7 +24,7 @@ namespace ImageProcess.MatOperateSet
         }
         
         /*危险的矩阵加法，未判断元素越界*/
-        unsafe public static bool AddOffset(Mat2D mat,Mat2D other)
+        public static bool AddOffset(Mat2D mat,Mat2D other)
         {
             if(mat.BitCount != other.BitCount && mat.Width != other.Width && mat.Height != other.Height)
             {
@@ -33,7 +34,7 @@ namespace ImageProcess.MatOperateSet
             return true;
         }
         
-        unsafe public static bool AddOffsetSavety(Mat2D mat,byte val)
+        public static bool AddOffsetSavety(Mat2D mat,byte val)
         {
             if(8 != mat.BitCount)
             {
@@ -54,7 +55,7 @@ namespace ImageProcess.MatOperateSet
             return true;
         }
 
-        unsafe public static bool AddOffsetSavety(Mat2D mat,Mat2D other)
+        public static bool AddOffsetSavety(Mat2D mat,Mat2D other)
         {
             if(mat.BitCount != other.BitCount && mat.Width != other.Width && mat.Height != other.Height)
             {

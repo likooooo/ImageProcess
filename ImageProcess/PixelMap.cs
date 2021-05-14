@@ -118,6 +118,7 @@ namespace ImageProcess
         /*GDI+ Mat转图片*/
         public virtual bool WriteImage(string strFilePath)
         {
+            Stride = ((Width*BitCount + 31)>>5)<<2;
             using(Bitmap bmp = new Bitmap(Width, Height, PixelFormat))
             {
                 BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, bmp.PixelFormat);

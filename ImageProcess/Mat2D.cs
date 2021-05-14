@@ -19,11 +19,11 @@ namespace ImageProcess
 
     public class Mat2D:IMat2D,IDisposable
     {
-        public IntPtr Scan0{get;protected set;}
-        public int Length{get;protected set;}
-        public int Width{get;protected set;}
-        public int Height{get;protected set;}
-        public int BitCount{get;protected set;}
+        public IntPtr Scan0{get;internal  set;}
+        public int Length{get;internal set;}
+        public int Width{get;internal set;}
+        public int Height{get;internal set;}
+        public int BitCount{get;internal set;}
 
         public Mat2D()
         {

@@ -12,21 +12,8 @@ using System.Runtime.CompilerServices;
 
 namespace ImageProcess
 {
-    // #nullable enable
-    // public class Palette<T> where T:unmanaged
-    // {
-    //     public T[]? D{get;set;}
-    //     public int Length{get;set;}
-    //     public Palette(){D = null;}
-    //     public Palette(int length)
-    //     {
-    //         Length = Length;
-    //         D = new T[length];
-    //     }
-    // }
-    // #nullable disable
 
-    public class PixelMap : Mat2D
+    public class PixelMap<T> : Mat2D<T> where T:unmanaged  
     {
         public static Dictionary<PixelFormat,int> PixelFormatMappingBitCount = new Dictionary<PixelFormat, int>()
         {
@@ -78,17 +65,25 @@ namespace ImageProcess
                 Width       = bmp.Width;
                 Height      = bmp.Height;
                 PixelFormat = bmp.PixelFormat;
+                Debug.Assert(PixelFormatMappingBitCount.Keys.Contains(PixelFormat));
                 BitCount    = PixelFormatMappingBitCount[PixelFormat];
                 if(BitCount < 9 ||PixelFormat == PixelFormat.Format16bppArgb1555 )
                 {
                     Palette     = bmp.Palette;
                 }
-                RowLength   = Width*BitCount>>3;
-                Stride      = bmpData.Stride;
+                RowLength= Width*ElementSize;
+                Stride   = bmpData.Stride;
                 #if Debug_PixelMap
+                if(strFilePath.Contains("637_475_16"))
+                {
+                    Debug.Assert(PixelFormat == PixelFormat.Format4bppIndexed);
+                }
+                if(7 < BitCount)
+                {
                     Debug.Assert(Stride == ((Width*BitCount + 31)>>5)<<2);//Stride计算方法
+                }
                 #endif
-                Length      = RowLength*Height;
+                Length = RowLength*Height;
                 if(Length > 0)
                 {
                     Scan0 = Marshal.AllocHGlobal(Length);

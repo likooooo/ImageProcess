@@ -3,6 +3,7 @@
 ## History
 1. 正在搭建目录结构
 ## 文件描述
+- Images : 图像属性
 - Mat2D : 二维矩阵；
 - PixelMap及其派生类 : 文件<->Mat；
 - MatOperateSet : 线性代数实现；

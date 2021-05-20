@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using System.IO;
 using ImageProcess.Images;
 using System.Diagnostics;
 using System.Collections.Generic;

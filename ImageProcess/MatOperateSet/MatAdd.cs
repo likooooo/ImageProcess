@@ -8,12 +8,8 @@ namespace ImageProcess.MatOperateSet
     unsafe public static partial class MatOperateSet
     {
         /*危险的矩阵加法，未判断元素越界*/
-        public static bool AddOffset(Mat2D mat,byte val)
+        public static bool AddOffset(Mat2D<byte> mat,byte val)
         {
-            if(8 != mat.BitCount)
-            {
-                return false;
-            }
             int loopCount = mat.Length;
             byte* ptr = (byte*)mat.Scan0.ToPointer();
             while (loopCount-- > 0)
@@ -24,53 +20,63 @@ namespace ImageProcess.MatOperateSet
         }
         
         /*危险的矩阵加法，未判断元素越界*/
-        public static bool AddOffset(Mat2D mat,Mat2D other)
+        public static bool AddOffset(Mat2D<byte> mat, Mat2D<byte> other)
         {
-            if(mat.BitCount != other.BitCount && mat.Width != other.Width && mat.Height != other.Height)
+            if(mat.Width != other.Width && mat.Height != other.Height)
             {
                 return false;
             }
-            MemoryOperateSet.memcpy(mat.Scan0, other.Scan0, new UIntPtr((uint)mat.Length));
+            byte* ptr = (byte*)mat.Scan0.ToPointer();
+            byte* ptrOffset = (byte*)other.Scan0.ToPointer();
+            int loopCount = mat.Width*mat.Height;
+            while (loopCount-- > 0)
+            {
+                *ptr++ += *ptrOffset++;
+            }
             return true;
         }
         
-        public static bool AddOffsetSavety(Mat2D mat,byte val)
+        public static bool AddOffsetSavety(Mat2D<byte> mat,byte val)
         {
-            if(8 != mat.BitCount)
-            {
-                return false;
-            }
             int loopCount = mat.Length;
             byte* ptr = (byte*)mat.Scan0.ToPointer();
             Int32 container;
             while (loopCount-- > 0)
             {
                 container = *ptr + val;
-                if(0 > container || 255 < container)
+                if(0 > container)
                 {
-                    return false;
+                    container = 0;
+                }
+                else if(255 < container)
+                {
+                    container = 255;
                 }
                 *ptr++ = (byte)container;
             }
             return true;
         }
 
-        public static bool AddOffsetSavety(Mat2D mat,Mat2D other)
+        public static bool AddOffsetSavety(Mat2D<byte> mat, Mat2D<byte> other)
         {
-            if(mat.BitCount != other.BitCount && mat.Width != other.Width && mat.Height != other.Height)
+            if(mat.Width != other.Width && mat.Height != other.Height)
             {
                 return false;
             }
-            int loopCount = mat.Length;
             byte* ptr = (byte*)mat.Scan0.ToPointer();
-            byte* ptrOther = (byte*)other.Scan0.ToPointer();
-            Int32 container;
+            byte* ptrOffset = (byte*)other.Scan0.ToPointer();
+            int container;
+            int loopCount = mat.Width*mat.Height;
             while (loopCount-- > 0)
             {
-                container = *ptr + *ptrOther++;
-                if(0 > container || 255 < container)
+                container = *ptr + *ptrOffset++;
+                if(0 > container)
                 {
-                    return false;
+                    container = 0;
+                }
+                else if(255 < container)
+                {
+                    container = 255;
                 }
                 *ptr++ = (byte)container;
             }

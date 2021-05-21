@@ -4,10 +4,11 @@ using System.Runtime.InteropServices;
 
 namespace ImageProcess.MatOperateSet
 {
-    /*æÿ’Û≥À∑®  */
+    /*æÿ’Û≥À∑®*/
     unsafe public static partial class MatOperateSet
     {
-        public static bool MatMult(this Mat2D mat, byte mult)
+        /*≥À∑®*/
+        public static bool MatMult(this Mat2D<byte> mat, byte mult)
         {
             if(8 != mat.BitCount)
             {
@@ -22,17 +23,35 @@ namespace ImageProcess.MatOperateSet
             return true;
         }
         
-        public static int RowAt(this Mat2D mat, int row, out IntPtr startPtr)
+        /*≥À∑®*/
+        public static Mat2D<ushort> MatMult(this Mat2D<byte> mat, Mat2D<byte> other)
         {
-            int offset = 0;
-            if(0 > row || row >= mat.Length)
+            if(mat.Width != other.Height)
             {
-                startPtr = default(IntPtr);
-                return offset;
+                return null;
             }
-            offset = row * mat.Width * mat.BitCount>>3;
-            startPtr = IntPtr.Add(mat.Scan0, offset);
-            return offset;
+            var res = new Mat2D<ushort>(mat.Height, other.Width);
+            byte* ptrLeft  = (byte*)mat.Scan0.ToPointer();
+            byte* ptrRight = (byte*)other.Scan0.ToPointer();
+            ushort* dest   = (ushort*)res.Scan0.ToPointer();
+            int loopCount = res.Length;
+            int index = -1;
+            while (++index < loopCount)
+            {
+                int row = index/res.Width;
+                int col = (index - row*res.Width);
+                ushort val = 0;
+                for(int i = 0; i < mat.Width;i++)
+                {
+                    val += (ushort)
+                    (
+                        *(ptrLeft + row * mat.Width + i)**(ptrRight + i*other.Width + col)
+                    );
+                }
+                *dest++ = val;
+            }
+            return res;   
         }
+        
     }
 }

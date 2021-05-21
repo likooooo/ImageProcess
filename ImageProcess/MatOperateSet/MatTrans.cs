@@ -7,7 +7,7 @@ namespace ImageProcess.MatOperateSet
     /*×ªÖÃ¾ØÕó https://www.cnblogs.com/jcchan/p/10402403.html*/
     unsafe public static partial class MatOperateSet
     {
-        public static bool Transpose<T>(this Mat2D mat) where T:unmanaged
+        public static bool Transpose<T>(this Mat2D<T> mat) where T:unmanaged
         {
             if(sizeof(T) != mat.BitCount>>3)
             {
@@ -51,7 +51,7 @@ namespace ImageProcess.MatOperateSet
             int GetPre(int i, int m, int n)=>(i%m)*n + i / m;
         }   
 
-        public static T[,] MatToArray<T>(this Mat2D mat)where T:struct
+        public static T[,] MatToArray<T>(this Mat2D<T> mat)where T:unmanaged
         {
             T[,] array = new T[mat.Height,mat.Width];
             Span<T> src = new Span<T>(mat.Scan0.ToPointer(), mat.Width*mat.Height);

@@ -21,11 +21,11 @@ namespace ImageProcess
 
     unsafe public class Mat2D<T>:IMat2D,IDisposable where T:unmanaged
     {
-        public IntPtr Scan0{get;protected set;}
-        public int Length{get;protected set;}
-        public int Width{get;protected set;}
-        public int Height{get;protected set;}
-        public int ElementSize{get;protected set;}
+        public IntPtr Scan0{get;internal set;}
+        public int Length{get;internal set;}
+        public int Width{get;internal set;}
+        public int Height{get;internal set;}
+        public int ElementSize{get;internal set;}
         public int BitCount
         {
             get=> ElementSize<<3;
@@ -98,14 +98,13 @@ namespace ImageProcess
         public string[] ToMatStringLines(string strSplit = " ")
         {
             string[] str = new string[Height];
-            int rowIndex = 0;
+            int rowIndex = -1;
             int loopCount = Width*Height;
             T* dest = (T*)Scan0.ToPointer();
             int index = -1;
             while(++index < loopCount)
             {
-                str[rowIndex] += (*dest++).ToString();
-                if(0 == (index%Width) && (index > 0))
+                if(0 == (index%Width))
                 {
                     rowIndex++;
                 }
@@ -113,6 +112,7 @@ namespace ImageProcess
                 {
                     str[rowIndex] +=  strSplit;
                 }
+                str[rowIndex] += (*dest++).ToString();
             }
             return str;
         }

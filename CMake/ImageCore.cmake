@@ -1,6 +1,6 @@
 # 1. 设置编译变量
 set(INCLUDE_PATH ../include)
-set(SRC_PATH ../src/cpp)
+set(SRC_PATH ../src)
 set(UNITS_TEST_PATH ../src/UnitsTest)
 set(RELEASE_PATH ../releases)
 # 2. 设置输出路径

@@ -26,19 +26,16 @@ public:
     {
         ElementSize = sizeof(T);
         Length = width*height;
-        Scan0 = (T*)malloc(Length*sizeof(T));
+        Scan0 = (T*)malloc(Length * ElementSize);
     }  
 
-    Mat2D(int widht, int height, T array[])
+    Mat2D(int width, int height, T array[]):Width(width),Height(height)
     {
         ElementSize = sizeof(T);
-        Length = width*height*ElementSize;
-        VOIDRET_ASSERT(array.size() >= Length)
+        Length = width*height;
+        Scan0 = (T*)malloc(Length * ElementSize);
         T* p = Scan0;
-        for(int i = 0;i < Length;i++,p++)
-        {
-            *p = array[i];
-        }
+        memcpy(Scan0, array, Length * ElementSize);
     }
     
     void Memset(T val)
@@ -54,12 +51,12 @@ public:
     {
         int loopCount = Width*Height;
         T* p = Scan0;
-        string str = to_string(*p);
+        string str = to_string(*p++);
         for(int i = 1; i < loopCount; i++,p++)
         {     
             if(0 == i%Width)
             {
-                str += "/n";
+                str += "\n";
             }  
             else
             {
@@ -67,6 +64,7 @@ public:
             }    
             str += to_string(*p);
         }
+        str += "\n";
         return str;
     }
 
@@ -88,6 +86,17 @@ public:
             str += to_string(*p);
         }
         vec.push_back(str);
+    }
+
+    double Mean()
+    {
+        double val = 0;;
+        T* p = Scan0;
+        for(int i = 0; i < Length; i++)
+        {
+            val += *P;
+        }
+        return val/Length;
     }
 };
 

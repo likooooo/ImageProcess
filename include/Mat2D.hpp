@@ -6,6 +6,15 @@
 #include <vector>
 using namespace std;
 
+struct RLC
+{
+    public:
+    int label;
+    int index;
+    int length;
+    RLC(int i, int l):label(0),index(i),length(l){}
+};
+
 template<typename T>
 class Mat2D
 {
@@ -86,6 +95,13 @@ public:
             str += to_string(*p);
         }
         vec.push_back(str);
+    }
+
+    Mat2D<T>* DepthCopy()
+    {
+        Mat2D<T>* dest = new Mat2D<T>(Width, Height);
+        memcpy(dest->Scan0, Scan0, Length * ElementSize);
+        return dest;
     }
 
     double Mean()

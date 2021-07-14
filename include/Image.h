@@ -2,7 +2,7 @@
 #define IMAGE_H
 
 #include "ImageAttrDef.h"
-#include "ImageGdiPlus.hpp"
+// #include "ImageGdiPlus.hpp"
 #include "Mat2D.hpp"
 
 class Image/*Í¼Ïñ³éÏó½Ó¿Ú*/

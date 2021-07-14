@@ -1,47 +1,67 @@
 #ifndef COMPIERDEF_H
 #define COMPIERDEF_H
 
+#include <Windows.h>
 #include <stdio.h>
 #include <malloc.h>
-#include <Windows.h>
+#include <iostream>
 
-/*断言使能*/
-#define ASSERT_ENABLE
+#define ASSERT_ENABLE       /* 断言使能 */
+#define ASSERT_DEBUG_ENABLE /* 断言调试使能 */
+
 #ifdef ASSERT_ENABLE
-#define VOIDRET_ASSERT(condtion)\
-        do\
-        {\
-        if(!(condtion)){return;}\
-        } while (0)
-#define VALRET_ASSERT(condtion, retVal)\
-        do\
-        {\
-            if(!condtion){return retVal;}\
-        }while(0)
-#define ERROR_ASSERT(condtion, errorIndex)\
-        do\
-        {\
-            if(!condtion){throw errorIndex;}\
-        }while(0)
-
+    #ifdef ASSERT_DEBUG_ENABLE
+        #define VOIDRET_ASSERT(condtion)\
+                do\
+                {\
+                if(!((condtion))){std::printf("VOIDRET_ASSERT Catched : if(!("#condtion"))\n");return;}\
+                } while (0)
+        #define VALRET_ASSERT(condtion, retVal)\
+                do\
+                {\
+                    if(!(condtion)){std::printf("VALRET_ASSERT Catched : if(!("#condtion")){return "#retVal";}\n");return retVal;}\
+                }while(0)
+        #define ERROR_ASSERT(condtion, errorIndex)\
+                do\
+                {\
+                    if(!(condtion)){std::printf("ERROR_ASSERT Catched : if(!("#condtion ")){throw "#errorIndex";}\n");throw errorIndex;}\
+                }while(0)
+    #else
+        #define VOIDRET_ASSERT(condtion)\
+                do\
+                {\
+                if(!((condtion))){return;}\
+                } while (0)
+        #define VALRET_ASSERT(condtion, retVal)\
+                do\
+                {\
+                    if(!(condtion)){return retVal;}\
+                }while(0)
+        #define ERROR_ASSERT(condtion, errorIndex)\
+                do\
+                {\
+                    if(!(condtion)){throw errorIndex;}\
+                }while(0)
+    #endif
 #else
-#define VOIDRET_ASSERT(condtion)
-#define VALRET_ASSERT(condtion, retVal)
+    #define VOIDRET_ASSERT(condtion)
+    #define VALRET_ASSERT(condtion, retVal)
 #endif
+
 
 
 #define DECLARE_GET(Type, param)\
         private:\
         Type param;\
         public:\
-        Type Get##param##(){return param;}\
+        Type Get##param(){return param;}\
 
 #define DECLARE_GETSET(Type, param)\
         private:\
         Type param;\
         public:\
-        Type Get##param##(){return param;}\
-        void Set##param##(Type val){param = val;}
+        Type Get##param(){return param;}\
+        void Set##param(Type val){param = val;}
 
 #define DECLARE_PTR(type, param)\
         public:\

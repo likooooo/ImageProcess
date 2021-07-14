@@ -15,8 +15,9 @@ file(GLOB SRC_LIST_HPP ${INCLUDE_PATH}/*.hpp)
 file(GLOB SRC_LIST_CPP ${SRC_PATH}/*.cpp)
 add_library(${PROJECT_NAME} ${SRC_LIST_HPP} ${SRC_LIST_CPP})
 # 4.2 编译单元测试
+file(GLOB SRC_LIST_HPP ${UNITS_TEST_PATH}/*.hpp)
 file(GLOB SRC_LIST_CPP ${UNITS_TEST_PATH}/*.cpp)
-add_executable(${PROJECT_NAME}_Test1  ${SRC_LIST_CPP})
+add_executable(${PROJECT_NAME}_Test1 ${SRC_LIST_HPP} ${SRC_LIST_CPP})
 
 # 设置可执行文件的输出路径
 

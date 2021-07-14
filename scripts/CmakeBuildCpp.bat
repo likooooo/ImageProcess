@@ -1,2 +1,2 @@
 cmake ../CMake/CMakeLists.txt
-cmake --build ../CMake
+cmake --build ../CMake --config Release

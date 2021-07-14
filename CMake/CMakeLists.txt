@@ -3,6 +3,10 @@
 ## 指定编译器 : cmake CmakeList.txt -G "Visual Studio 8 2005" 
 cmake_minimum_required(VERSION 3.0.0)
 project(ImageCore VERSION 0.1.0)
+## Release模式设置生成pdb
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")
+
 include(ImageCore.cmake)
 # # 1. 设置编译变量
 # set(CPP_LIB_NAME ImageCore)
